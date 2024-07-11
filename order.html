@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Brew Try</title>
+    <link rel="stylesheet" href="style6.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #3d1e08;
+            padding: 0 30px;
+        }
+
+        .navbar .logo h2 {
+            margin: 0;
+            color: #fff;
+            font-size: 38px;
+        }
+
+        .navbar .navList {
+            display: flex;
+            align-items: center;
+            margin: 0 30px;
+        }
+
+        .navbar .navList ul {
+            display: flex;
+            align-items: center;
+            list-style: none;
+        }
+
+        .navbar .navList ul li {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .navList ul li a {
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 0 5px;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .navbar .navList ul li a:hover {
+            color: rgb(238, 214, 169);
+        }
+
+        .navbar .navList ul li .fas {
+            margin-left: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 18px;
+    
+        }
+        .navbar .navList ul li .fas.fa-shopping-cart {
+            margin-left: 30px; /* Adjust this value to create the desired space */
+        }
+
+
+        .navbar .navList ul li .fas:hover {
+            color: rgb(238, 214, 169);
+        }
+
+        .search-container, .cart-container {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1000;
+        }
+
+        .search-container {
+            right: 50px; /* Adjust this value if needed */
+            top: 80px; /* Adjust this value if needed */
+        }
+
+        .search-container input[type="text"] {
+            width: 200px;
+            padding: 5px;
+        }
+
+        .cart-container {
+            right: 0;
+            top: 80px; /* Adjust this value if needed */
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .cart-item .item-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-item .item-info span {
+            margin: 2px 0;
+        }
+
+        .cart-item .item-info span:nth-child(2) {
+            color: rgb(181, 128, 49); /* Change the price color to brown */
+        }
+
+        .cart-item .remove-item {
+            cursor: pointer;
+            color: rgb(163, 99, 60);
+            margin-left: 20px;
+            transition: transform 0.3s ease-in-out; /* Add transition effect */
+        }
+
+        .cart-item .remove-item:hover {
+            transform: scale(1.2); /* Scale effect on hover */
+        }
+
+        /* Toggle Search and Cart using CSS */
+        #search-toggle:checked ~ .search-container,
+        #cart-toggle:checked ~ .cart-container {
+            display: block;
+        }
+
+        /* Hide the checkboxes */
+        #search-toggle,
+        #cart-toggle {
+            display: none;
+        }
+
+        .receipt, .transactions {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px dashed #3d1e08;
+            background-color: #f5f1ea;
+            color: #3d1e08;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .receipt h2, .transactions h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .receipt table, .transactions table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .receipt table th, .transactions table th,
+        .receipt table td, .transactions table td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px dashed #3d1e08;
+        }
+
+        .receipt table th, .transactions table th {
+            background-color: #3d1e08;
+            color: #fff;
+        }
+
+        .total {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 18px;
+        }
+
+        footer {
+            width: 100%;
+            padding: 20px 0;
+            background-color: #3d1e08;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            z-index: 0;
+            clear: both; /* Ensures the footer clears any floated elements */
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-content p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .footer-content .socials {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-content .socials li {
+            display: inline;
+        }
+
+        .footer-content .socials li a {
+            color: #fff;
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        .footer-content .socials li a:hover {
+            color: rgb(238, 214, 169);
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="search-toggle">
+    <input type="checkbox" id="cart-toggle">
+
+    <div class="navbar">
+        <div class="logo">
+            <h2>Code Brew</h2>
+        </div>
+        
+        <div class="navList">
+            <ul>
+                <li><a href="index6.html">Home</a></li>
+                <li><a href="ABOUT US.html">About Us</a></li>
+                <li><a href="menu.html">Our Menu</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="blogs.html">Blogs</a>
+                    <label for="search-toggle" class="fas fa-search"></label>
+                    <label for="cart-toggle" class="fas fa-shopping-cart"></label>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" placeholder="Search...">
+    </div>
+    <div class="cart-container">
+        <div class="cart-item">
+            <img src="https://www.lotusbiscoff.com/sites/default/files/2023-01/BISCOFF%20AFFOGATO-340%201x1.jpg" alt="Product 1">
+            <div class="item-info">
+                <span>Cart Item 01</span>
+                <span>$10.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+        <div class="cart-item">
+            <img src="https://th.bing.com/th/id/OIP.3FOaqXYHaFLh7BJLDh_bUQAAAA?rs=1&pid=ImgDetMain" alt="Product 2">
+            <div class="item-info">
+                <span>Cart Item 02</span>
+                <span>$9.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+        <div class="cart-item">
+            <img src="https://th.bing.com/th/id/OIP.KObWHbsg0IoDn2GNIflprQHaHa?w=600&h=600&rs=1&pid=ImgDetMain" alt="Product 3">
+            <div class="item-info">
+                <span>Cart Item 03</span>
+                <span>$9.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+        <div class="cart-item">
+            <img src="https://th.bing.com/th/id/OIP.8BCVAJne5iwZCyapJ3usmQHaKv?rs=1&pid=ImgDetMain" alt="Product 4">
+            <div class="item-info">
+                <span>Cart Item 03</span>
+                <span>$9.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+    </div>
+
+    <div class="receipt">
+        <h2>Order Receipt</h2>
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+            </tr>
+            <tr>
+                <td>Espresso</td>
+                <td>2</td>
+                <td>$5.00</td>
+            </tr>
+            <tr>
+                <td>Latte</td>
+                <td>1</td>
+                <td>$4.50</td>
+            </tr>
+            <tr>
+                <td>Cappuccino</td>
+                <td>1</td>
+                <td>$4.00</td>
+            </tr>
+        </table>
+        <div class="total">
+            <p>Total: $13.50</p>
+        </div>
+    </div>
+
+    <div class="transactions">
+        <h2>Past Transactions</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td>2023-09-01</td>
+                <td>Espresso, Latte</td>
+                <td>$9.50</td>
+            </tr>
+            <tr>
+                <td>2023-09-10</td>
+                <td>Cappuccino, Espresso</td>
+                <td>$9.00</td>
+            </tr>
+            <tr>
+                <td>2023-09-15</td>
+                <td>Latte, Cappuccino</td>
+                <td>$8.50</td>
+            </tr>
+        </table>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 Code Brew. All Rights Reserved.</p>
+            <p>Created by Althea Zuleika Sadicon</p>
+            <ul class="socials">
+                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

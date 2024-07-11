@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Brew Try</title>
+    <link rel="stylesheet" href="style6.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.navbar {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #3d1e08;
+    padding: 0 30px;
+}
+
+.navbar .logo h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 38px;
+    text-transform: uppercase;
+}
+
+.navbar .navList {
+    display: flex;
+    align-items: center;
+    margin: 0 30px;
+}
+
+.navbar .navList ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+.navbar .navList ul li {
+    position: relative;
+}
+
+.navbar .navList ul li a {
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 10px;
+    font-size: 18px;
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.navbar .navList ul li a:hover {
+    color: rgb(238, 214, 169);
+}
+
+.navbar .navList ul li .fas {
+    margin-left: 10px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.navbar .navList ul li .fas.fa-shopping-cart {
+    margin-left: 30px; /* Adjust this value to create the desired space */
+}
+
+.navbar .navList ul li .fas:hover {
+    color: rgb(238, 214, 169);
+    transform: scale(1.2); /* Scale effect on hover */
+}
+
+.search-container, .cart-container {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: top;
+    opacity: 0;
+}
+
+.search-container.active, .cart-container.active {
+    display: block;
+    transform: translateY(10px);
+    opacity: 1;
+}
+
+.search-container {
+    right: 50px; /* Adjust this value if needed */
+    top: 80px; /* Adjust this value if needed */
+}
+
+.search-container input[type="text"] {
+    width: 200px;
+    padding: 5px;
+}
+
+.cart-container {
+    right: 0;
+    top: 80px; /* Adjust this value if needed */
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.cart-item:hover {
+    transform: scale(1.02); /* Scale effect on hover */
+}
+
+.cart-item img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.cart-item .item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-item .item-info span {
+    margin: 2px 0;
+}
+
+.cart-item .item-info span:nth-child(2) {
+    color: rgb(181, 128, 49); /* Change the price color to brown */
+}
+
+.cart-item .remove-item {
+    cursor: pointer;
+    color: rgb(163, 99, 60);
+    margin-left: 20px;
+    transition: transform 0.3s ease;
+}
+
+.cart-item .remove-item:hover {
+    transform: scale(1.2); /* Scale effect on hover */
+}
+
+.add-to-basket {
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: transform 0.3s ease;
+}
+
+.add-to-basket:hover {
+    transform: scale(1.1); /* Scale effect on hover */
+}
+
+
+h1 {
+    color: #8B4513;
+    margin-top: 70px; /* Adjust according to your layout */
+    text-align: center;
+}
+
+.menu-section {
+    margin: 20px auto;
+    max-width: 800px; /* Adjust as needed */
+    text-align: center;
+}
+
+.menu-section h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.carousel .item-container {
+    text-align: center;
+    margin: 0 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.carousel .item-container:hover {
+    transform: scale(1.05); /* Scale effect on hover */
+}
+
+.carousel img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.item-name {
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.item-price {
+    margin: 5px 0;
+    color: #8B4513;
+}
+
+.add-to-basket {
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.arrow {
+    font-size: 24px;
+    cursor: pointer;
+    color: #8B4513;
+}
+
+footer {
+    width: 100%;
+    padding: 20px 0;
+    background-color: #3d1e08;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    clear: both;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-content p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.footer-content .socials {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+    display: flex;
+    gap: 10px;
+}
+
+.footer-content .socials li {
+    display: inline;
+}
+
+.footer-content .socials li a {
+    color: #fff;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.footer-content .socials li a:hover {
+    color: rgb(238, 214, 169);
+}
+
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="search-toggle">
+    <input type="checkbox" id="cart-toggle">
+
+    <div class="navbar">
+        <div class="logo">
+            <h2>Code Brew</h2>
+        </div>
+        
+        <div class="navList">
+            <ul>
+                <li><a href="index6.html">Home</a></li>
+                <li><a href="ABOUT US.html">About Us</a></li>
+                <li><a href="menu.html">Our Menu</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="blogs.html">Blogs</a>
+                    <label for="search-toggle" class="fas fa-search"></label>
+                    <label for="cart-toggle" class="fas fa-shopping-cart"></label>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" placeholder="Search...">
+    </div>
+    <div class="cart-container">
+        <div class="cart-item">
+            <img src="https://www.lotusbiscoff.com/sites/default/files/2023-01/BISCOFF%20AFFOGATO-340%201x1.jpg" alt="Product 1">
+            <div class="item-info">
+                <span>Cart Item 01</span>
+                <span>$10.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+        <div class="cart-item">
+            <img src="https://th.bing.com/th/id/OIP.3FOaqXYHaFLh7BJLDh_bUQAAAA?rs=1&pid=ImgDetMain" alt="Product 2">
+            <div class="item-info">
+                <span>Cart Item 02</span>
+                <span>$9.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+        <div class="cart-item">
+            <img src="https://th.bing.com/th/id/OIP.KObWHbsg0IoDn2GNIflprQHaHa?w=600&h=600&rs=1&pid=ImgDetMain" alt="Product 3">
+            <div class="item-info">
+                <span>Cart Item 03</span>
+                <span>$9.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+        <div class="cart-item">
+            <img src="https://th.bing.com/th/id/OIP.8BCVAJne5iwZCyapJ3usmQHaKv?rs=1&pid=ImgDetMain" alt="Product 4">
+            <div class="item-info">
+                <span>Cart Item 03</span>
+                <span>$9.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+    </div>
+
+   <h1><u>Our Menu</u></h1>
+
+    <div class="menu-section">
+        <h2>Main Course</h2>
+        <div class="carousel">
+            <div class="arrow">&lt;</div>
+            <div class="item-container">
+                <img src="https://th.bing.com/th/id/OIP.Tv73XSFWipXRs1nL42mSnQHaJ4?w=768&h=1024&rs=1&pid=ImgDetMain" alt="Main Course 1">
+                <div class="item-name">Chicken Piccata</div>
+                <div class="item-price">$12.99</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="item-container">
+                <img src="https://www.cubesnjuliennes.com/wp-content/uploads/2021/07/Pesto-Pasta-Salad-Recipe-720x720.jpg" alt="Main Course 2">
+                <div class="item-name">Pesto Pasta Salad</div>
+                <div class="item-price">$10.49</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="item-container">
+                <img src="https://th.bing.com/th/id/OIP.EOPx-ZLBiuOTmcP-yB19ugHaLH?w=768&h=1152&rs=1&pid=ImgDetMain" alt="Main Course 3">
+                <div class="item-name">Miso Salmon</div>
+                <div class="item-price">$15.99</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="item-container">
+                <img src="https://media.istockphoto.com/photos/lasagna-picture-id635833122?k=6&m=635833122&s=612x612&w=0&h=ZwTnB7axMv06pHSaHzH24xtmFANR37ka8LhUdivrY0Y=" alt="Main Course 4">
+                <div class="item-name">Mexican Lasagna</div>
+                <div class="item-price">$13.49</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="arrow">&gt;</div>
+        </div>
+    </div>
+
+    <div class="menu-section">
+        <h2>Pastry</h2>
+        <div class="carousel">
+            <div class="arrow">&lt;</div>
+            <div class="item-container">
+                <img src="https://th.bing.com/th/id/OIP._srg-6aLDrbsLiIvP8SIbwHaHa?w=1200&h=1200&rs=1&pid=ImgDetMain" alt="Pastry 1">
+                <div class="item-name">Strawberry Cake</div>
+                <div class="item-price">$5.99</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="item-container">
+                <img src="https://thehealthfulideas.com/wp-content/uploads/2022/07/Croissant-Breakfast-Sandwich-SQUARE2-1024x1024.jpg" alt="Pastry 2">
+                <div class="item-name">Croissant Sandwich</div>
+                <div class="item-price">$4.49</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="item-container">
+                <img src="https://www.yellowthyme.com/wp-content/uploads/2020/04/Chocolate-Babka-6-of-7.jpg" alt="Pastry 3">
+                <div class="item-name">Chocolate Babka</div>
+                <div class="item-price">$6.99</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="item-container">
+                <img src="https://theloopywhisk.com/wp-content/uploads/2021/01/Blueberry-Cheesecake_730px-9.jpg" alt="Pastry 4">
+                <div class="item-name">Blueberry Cheesecake</div>
+                <div class="item-price">$5.49</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="arrow">&gt;</div>
+        </div>
+    </div>
+
+    <div class="menu-section">
+        <h2>Drinks</h2>
+        <div class="carousel">
+            <div class="arrow">&lt;</div>
+            <div class="item-container">
+                <img src="https://th.bing.com/th/id/OIP.6FoUSwTZNsXdOY4OKUyAewAAAA?w=300&h=300&rs=1&pid=ImgDetMai" alt="Drink 1">
+                <div class="item-name">Matcha Latte</div>
+                <div class="item-price">$3.99</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="item-container">
+                <img src="https://th.bing.com/th/id/OIP.9dYE8kcz0lyZInGZwy8fPAHaHa?w=1200&h=1200&rs=1&pid=ImgDetMain" alt="Drink 2">
+                <div class="item-name">Strawberry Acai</div>
+                <div class="item-price">$4.49</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="item-container">
+                <img src="https://bakingmischief.com/wp-content/uploads/2019/05/iced-mocha-image-square.jpg" alt="Drink 3">
+                <div class="item-name">Mocha</div>
+                <div class="item-price">$4.99</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="item-container">
+                <img src="https://th.bing.com/th/id/OIP.9dn_RWIPRa1dWanaBFirAQHaJQ?rs=1&pid=ImgDetMain" alt="Drink 4">
+                <div class="item-name">Mango Smoothie</div>
+                <div class="item-price">$4.99</div>
+                <button class="add-to-basket">Add to Basket</button>
+            </div>
+            <div class="arrow">&gt;</div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 Code Brew. All Rights Reserved.</p>
+            <ul class="socials">
+                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

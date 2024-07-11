@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Brew Try</title>
+    <link rel="stylesheet" href="style6.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #3d1e08;
+            padding: 0 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .logo h2 {
+            margin: 0;
+            color: #fff;
+            font-size: 38px;
+        }
+
+        .navbar .navList {
+            display: flex;
+            align-items: center;
+            margin: 0 30px;
+        }
+
+        .navbar .navList ul {
+            display: flex;
+            align-items: center;
+            list-style: none;
+        }
+
+        .navbar .navList ul li {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .navList ul li a {
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 0 5px;
+            font-size: 18px;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .navList ul li a:hover {
+            color: rgb(238, 214, 169);
+            transform: translateY(-2px);
+        }
+
+        .navbar .navList ul li .fas {
+            margin-left: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .navList ul li .fas.fa-shopping-cart {
+            margin-left: 30px;
+        }
+
+        .navbar .navList ul li .fas:hover {
+            color: rgb(238, 214, 169);
+            transform: scale(1.1);
+        }
+
+        .search-container, .cart-container {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-container {
+            right: 50px;
+            top: 80px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .search-container input[type="text"] {
+            width: 200px;
+            padding: 5px;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-container input[type="text"]:focus {
+            border-color: #3d1e08;
+            outline: none;
+        }
+
+        .cart-container {
+            right: 0;
+            top: 80px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .cart-item img:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-item .item-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-item .item-info span {
+            margin: 2px 0;
+        }
+
+        .cart-item .item-info span:nth-child(2) {
+            color: rgb(181, 128, 49);
+        }
+
+        .cart-item .remove-item {
+            cursor: pointer;
+            color: rgb(163, 99, 60);
+            margin-left: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .cart-item .remove-item:hover {
+            transform: scale(1.2);
+        }
+
+        .checkout-button {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3d1e08;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .checkout-button:hover {
+            background-color: rgb(238, 214, 169);
+            color: #3d1e08;
+            transform: scale(1.05);
+        }
+
+        #search-toggle:checked ~ .search-container,
+        #cart-toggle:checked ~ .cart-container {
+            display: block;
+        }
+
+        #search-toggle,
+        #cart-toggle {
+            display: none;
+        }
+        
+        .about-us {
+            padding: 50px;
+            text-align: left;
+            background-color: #f9f9f9;
+            color: #61300d;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .about-us h2 {
+            font-size: 48px;
+            position: relative;
+        }
+        
+        .about-us h2 span {
+            color: #3d1e08;
+        }
+
+        .about-us h2::after {
+            content: "";
+            width: 100px;
+            height: 5px;
+            background-color: #3d1e08;
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .about-us h2:hover::after {
+            width: 200px;
+        }
+
+        .about-us p {
+            font-size: 18px;
+            margin: 20px 0;
+            text-align: justify;
+        }
+
+        .about-us .content {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .about-us .text {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .about-us .video {
+            flex: 1;
+            max-width: 100%;
+        }
+
+        .about-us .video video {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .about-us .video video:hover {
+            transform: scale(1.05);
+        }
+
+        @media (min-width: 768px) {
+            .about-us .content {
+                flex-direction: row;
+            }
+            .about-us .video {
+                max-width: 40%;
+                padding-top: 8%;
+            }
+        }
+
+        .mission-vision {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+
+        .mission, .vision {
+            background-color: #eae7e1;
+            padding: 20px;
+            border-radius: 5px;
+            width: 48%;
+            color: #61300d;
+            transition: transform 0.3s ease;
+        }
+
+        .mission:hover, .vision:hover {
+            transform: scale(1.05);
+        }
+
+        .founder {
+            margin-top: 30px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .founder img {
+            width: 150px;
+            border-radius: 50%;
+            border: 2px solid #61300d;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .founder img:hover {
+            transform: rotate(5deg);
+        }
+
+        .founder h2 {
+            font-size: 24px;
+        }
+
+        .founder p {
+            font-size: 16px;
+            color: #784018;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="search-toggle">
+    <input type="checkbox" id="cart-toggle">
+
+    <div class="navbar">
+        <div class="logo">
+            <h2>Code Brew</h2>
+        </div>
+
+        <div class="navList">
+            <ul>
+                <li><a href="index6.html">Home</a></li>
+                <li><a href="ABOUT US.html">About Us</a></li>
+                <li><a href="menu.html">Our Menu</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li>
+                    <a href="blogs.html">Blogs</a>
+                    <label for="search-toggle" class="fas fa-search"></label>
+                    <label for="cart-toggle" class="fas fa-shopping-cart"></label>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="cart-container">
+        <div class="cart-item">
+            <img src="https://www.lotusbiscoff.com/sites/default/files/2023-01/BISCOFF%20AFFOGATO-340%201x1.jpg" alt="Product 1">
+            <div class="item-info">
+                <span>Cart Item 01</span>
+                <span>$10.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+        <div class="cart-item">
+            <img src="https://th.bing.com/th/id/OIP.3FOaqXYHaFLh7BJLDh_bUQAAAA?rs=1&pid=ImgDetMain" alt="Product 2">
+            <div class="item-info">
+                <span>Cart Item 02</span>
+                <span>$9.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+        <div class="cart-item">
+            <img src="https://th.bing.com/th/id/OIP.KObWHbsg0IoDn2GNIflprQHaHa?w=600&h=600&rs=1&pid=ImgDetMain" alt="Product 3">
+            <div class="item-info">
+                <span>Cart Item 03</span>
+                <span>$9.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+        <div class="cart-item">
+            <img src="https://th.bing.com/th/id/OIP.8BCVAJne5iwZCyapJ3usmQHaKv?rs=1&pid=ImgDetMain" alt="Product 4">
+            <div class="item-info">
+                <span>Cart Item 04</span>
+                <span>$9.00</span>
+            </div>
+            <span class="remove-item">x</span>
+        </div>
+        <a href="checkout.html" class="checkout-button">Checkout</a>
+    </div>
+
+    <section class="about-us" id="about-us">
+        <div class="content">
+            <div class="text">
+                <h2>Our <span>Story</span></h2>
+                <p>Code Brew is a cozy cafe founded in 2023 by two IT students who love coding and coffee. The couple wanted a place where people could enjoy great coffee while working on their projects. They designed the cafe with comfy seats, fast Wi-Fi, and plenty of power outlets. The menu features a range of delicious drinks and snacks, perfect for long study sessions or casual meetups. Code Brew has quickly become a favorite spot for students and professionals alike. Our company has grown from a small startup to a leading player in the industry. Our journey began with a vision to innovate and provide exceptional services, and over the years, we've stayed true to that vision. We are proud of our heritage and the milestones we have achieved along the way.</p>
+            </div>
+            <div class="video">
+                <video controls>
+                    <source src="VID1.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <div class="mission-vision">
+        <div class="mission">
+            <h2>Mission</h2>
+            <p>Our mission is to deliver top-notch products and services that exceed our customers' expectations. We believe in fostering a culture of continuous improvement, where every team member is encouraged to think creatively and push the boundaries of what's possible.</p>
+        </div>
+        <div class="vision">
+            <h2>Vision</h2>
+            <p>Our vision is to be a global leader in our field, known for our integrity, innovation, and unwavering commitment to excellence.</p>
+        </div>
+    </div>
+
+    <div class="founder">
+        <img src="founder.jpg" alt="Founder">
+        <h2>Althea Zuleika Sadicon, Founder & CEO</h2>
+        <p>Althea Zuleika founded the company with a passion for innovation and a dedication to quality. With over the years of experience in the industry, She has been the driving force behind our success. Her leadership and vision have propelled us to new heights and will continue to guide us into the future.</p>
+    </div>
+</body>
+</html>
